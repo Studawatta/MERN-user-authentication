@@ -7,7 +7,7 @@ module.exports.register = async (req, res) => {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(req.body.password, salt);
     const newUser = new User({
-      username: req.body.username,
+      name: req.body.name,
       email: req.body.email,
       password: hash,
     });
@@ -16,5 +16,31 @@ module.exports.register = async (req, res) => {
   } catch (error) {
     res.status(500).json(error);
     console.log(error);
+  }
+};
+
+module.exports.login = async (req, res) => {
+  const user = await User.findOne({
+    name: req.body.name,
+  });
+  if (user) {
+    const isPasswordCorrect = await bcrypt.compare(
+      req.body.password,
+      user.password
+    );
+    if (isPasswordCorrect) {
+      const token = jwt.sign(
+        {
+          name: user.name,
+          email: user.email,
+        },
+        'sandun123'
+      );
+      res.json({ status: 'ok', user: token });
+    } else {
+      res.status(400).json('Wrong password or username!');
+    }
+  } else {
+    res.status(404).json('User not found!');
   }
 };

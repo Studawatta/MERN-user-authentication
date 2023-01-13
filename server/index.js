@@ -19,6 +19,7 @@ const connect = () => {
 };
 app.use(express.json());
 app.use('/api/user', userRoute);
+
 app.listen(process.env.PORT, () => {
   connect();
   console.log(`Server is running on port ${process.env.PORT}`);
