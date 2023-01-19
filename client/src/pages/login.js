@@ -39,7 +39,7 @@ const Login = () => {
           <input
             type="text"
             placeholder="Name"
-            className="border-2 border-black placeholder:text-center px-2"
+            className="border-2 border-black placeholder:text-center px-2 py-1"
             onChange={(e) => {
               setName(e.target.value);
             }}
@@ -48,7 +48,7 @@ const Login = () => {
           <input
             type="password"
             placeholder="Password"
-            className="border-2 border-black placeholder:text-center px-2 mt-3"
+            className="border-2 border-black placeholder:text-center px-2 py-1 mt-3"
             onChange={(e) => {
               setPassword(e.target.value);
             }}
