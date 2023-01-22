@@ -1,13 +1,32 @@
-import { React, useState } from 'react';
+import { React, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 const Register = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const nameRef = useRef(null);
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+
+  // const [name, setName] = useState('');
+  // const [email, setEmail] = useState('');
+  // const [password, setPassword] = useState('');
+
+  const reset = () => {
+    nameRef.current.value = '';
+    emailRef.current.value = '';
+    passwordRef.current.value = '';
+  };
+
+  console.log('rednerd');
 
   const userRegister = async (e) => {
     e.preventDefault();
+
+    const datas = new FormData(e.target);
+    const ddd = Object.fromEntries(datas.entries());
+    console.log(ddd);
+    var name = ddd.name;
+    var email = ddd.email;
+    var password = ddd.password;
     const response = await fetch('http://localhost:8800/api/user/register', {
       method: 'POST',
       headers: {
@@ -20,8 +39,8 @@ const Register = () => {
       }),
     });
     const data = await response.json();
-    console.log(data);
-    alert('User Registered');
+    alert(data);
+    reset();
   };
 
   return (
@@ -38,30 +57,36 @@ const Register = () => {
           <input
             type="text"
             placeholder="Name"
+            name="name"
             className="border-2 border-black placeholder:text-center px-2 py-1"
-            onChange={(e) => {
-              setName(e.target.value);
-            }}
+            ref={nameRef}
+            // onChange={(e) => {
+            //   setName(e.target.value);
+            // }}
           />
           <br />
 
           <input
             type="email"
             placeholder="Email"
+            name="email"
             className="border-2 border-black mt-3 placeholder:text-center px-2 py-1"
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
+            ref={emailRef}
+            // onChange={(e) => {
+            //   setEmail(e.target.value);
+            // }}
           />
           <br />
 
           <input
             type="password"
             placeholder="Password"
+            name="password"
             className="border-2 border-black mt-3 placeholder:text-center px-2 py-1"
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
+            ref={passwordRef}
+            // onChange={(e) => {
+            //   setPassword(e.target.value);
+            // }}
           />
           <br />
 

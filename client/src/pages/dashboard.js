@@ -7,6 +7,9 @@ const Dashboard = () => {
   const [name, setName] = useState('');
   useEffect(() => {
     const token = localStorage.getItem('token');
+    const redirect = () => {
+      navigate('/login');
+    };
     if (token) {
       const user = jwt_decode(token);
       console.log(user);
@@ -17,12 +20,14 @@ const Dashboard = () => {
       }
     } else {
       alert('Please log in');
+      redirect();
     }
-  }, []);
+  }, [navigate]);
 
   const logout = (e) => {
     e.preventDefault();
     localStorage.removeItem('token');
+    alert('log out');
     navigate('/login');
   };
 
