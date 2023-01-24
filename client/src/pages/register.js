@@ -1,14 +1,27 @@
-import { React, useRef } from 'react';
+import { React, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { AiOutlineEyeInvisible } from 'react-icons/ai';
+import { AiOutlineEye } from 'react-icons/ai';
 
 const Register = () => {
+  const [showPassword, setShowPassword] = useState(false);
+
+  const [details, setDetails] = useState({
+    username: '',
+    email: '',
+    password: '',
+  });
+
+  const [errors, setErrors] = useState({
+    username: '',
+    email: '',
+    password: '',
+  });
+  const [ddd, setddd] = useState('ss');
+
   const nameRef = useRef(null);
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
-
-  // const [name, setName] = useState('');
-  // const [email, setEmail] = useState('');
-  // const [password, setPassword] = useState('');
 
   const reset = () => {
     nameRef.current.value = '';
@@ -16,31 +29,52 @@ const Register = () => {
     passwordRef.current.value = '';
   };
 
-  console.log('rednerd');
-
   const userRegister = async (e) => {
     e.preventDefault();
-
-    const datas = new FormData(e.target);
-    const ddd = Object.fromEntries(datas.entries());
+    setddd('sssssssssssssssssssssssss');
     console.log(ddd);
-    var name = ddd.name;
-    var email = ddd.email;
-    var password = ddd.password;
-    const response = await fetch('http://localhost:8800/api/user/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name,
-        email,
-        password,
-      }),
-    });
-    const data = await response.json();
-    alert(data);
-    reset();
+    // const username = details.username;
+    // const email = details.email;
+    // const password = details.password;
+
+    // const response = await fetch('http://localhost:8800/api/user/register', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     username,
+    //     email,
+    //     password,
+    //   }),
+    // });
+    // const data = await response.json();
+    // alert(data);
+    // reset();
+  };
+
+  const validate = (details) => {
+    console.log('I am in validate');
+
+    // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    // // const usernameRegex = /^[A-Za-z0-9]{3,16}$/;
+
+    // if (!details.username) {
+    //   setErrors.username('Username is required!');
+    // }
+    // if (!details.email) {
+    //   setErrors.email('Email is required!');
+    // } else if (!emailRegex.test(details.email)) {
+    //   setErrors.email('This is not valid email format');
+    // }
+    // if (!details.password) {
+    //   setErrors.password('Password is required!');
+    // } else if (!passwordRegex.test(details.password)) {
+    //   setErrors.password(
+    //     'Password must contain minimum eight characters, at least one uppercase letter, one lowercase letter and one number'
+    //   );
+    // }
   };
 
   return (
@@ -54,41 +88,53 @@ const Register = () => {
           onSubmit={userRegister}
           className="w-fit bg-green-300 p-[10px] m-auto mt-[20px]"
         >
-          <input
-            type="text"
-            placeholder="Name"
-            name="name"
-            className="border-2 border-black placeholder:text-center px-2 py-1"
-            ref={nameRef}
-            // onChange={(e) => {
-            //   setName(e.target.value);
-            // }}
-          />
-          <br />
+          <div className="w-[250px] bg-white border-2 border-slate-400 rounded-[10px] p-2 pl-4 ">
+            <input
+              type="text"
+              placeholder="Username"
+              name="username"
+              className="placeholder:text-center w-[90%] outline-none"
+              ref={nameRef}
+              onChange={(e) => setDetails.username(e.target.value)}
+            />
+          </div>
+          <p className="text-red-600 text-[12px] font-medium italic">
+            {errors.username}
+          </p>
 
-          <input
-            type="email"
-            placeholder="Email"
-            name="email"
-            className="border-2 border-black mt-3 placeholder:text-center px-2 py-1"
-            ref={emailRef}
-            // onChange={(e) => {
-            //   setEmail(e.target.value);
-            // }}
-          />
-          <br />
+          <div className="w-[250px] bg-white border-2 border-slate-400 rounded-[10px] p-2 pl-4  mt-4">
+            <input
+              type="email"
+              placeholder="Email"
+              name="email"
+              className="placeholder:text-center w-[90%] outline-none"
+              ref={emailRef}
+              onChange={(e) => setDetails.email(e.target.value)}
+            />
+          </div>
+          <p className="text-red-600 text-[12px] font-medium italic"></p>
 
-          <input
-            type="password"
-            placeholder="Password"
-            name="password"
-            className="border-2 border-black mt-3 placeholder:text-center px-2 py-1"
-            ref={passwordRef}
-            // onChange={(e) => {
-            //   setPassword(e.target.value);
-            // }}
-          />
-          <br />
+          <div className="w-[250px] bg-white border-2 border-slate-400 rounded-[10px]  p-2 pl-4 mt-4 flex justify-between">
+            <input
+              type={`${showPassword ? 'text' : 'password'}`}
+              placeholder="Password"
+              name="password"
+              className=" placeholder:text-center w-[90%] outline-none"
+              ref={passwordRef}
+              onChange={(e) => setDetails.password(e.target.value)}
+            />
+            {showPassword ? (
+              <AiOutlineEye
+                className="text-[22px] cursor-pointer"
+                onClick={() => setShowPassword(false)}
+              />
+            ) : (
+              <AiOutlineEyeInvisible
+                className="text-[22px] cursor-pointer"
+                onClick={() => setShowPassword(true)}
+              />
+            )}
+          </div>
 
           <input
             type="submit"
